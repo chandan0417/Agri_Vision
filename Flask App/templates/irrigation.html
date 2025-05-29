@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+{% block pagetitle %}Irrigation Analysis{% endblock pagetitle %}
+{% block body %}
+<div class="container py-5">
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto text-center">
+            <h1 class="display-4 mb-3">Irrigation Analysis</h1>
+            <p class="lead text-muted">
+                Upload thermal images of your field to get moisture analysis and irrigation recommendations.
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-upload me-2"></i>Upload Image</h5>
+                </div>
+                <div class="card-body">
+                    <form id="uploadForm" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="imageFile" class="form-label">Select Thermal Image</label>
+                            <input type="file" class="form-control" id="imageFile" name="image" accept="image/*" required>
+                        </div>
+                        <input type="hidden" name="colormap" value="thermal">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-analyze me-2"></i>Analyze Image
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Analysis Guide</h5>
+                </div>
+                <div class="card-body">
+                    <h6 class="mb-3">Color Interpretation:</h6>
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="bg-primary" style="width: 20px; height: 20px;"></div>
+                        <span class="ms-2">High Moisture (Well-irrigated areas)</span>
+                    </div>
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="bg-success" style="width: 20px; height: 20px;"></div>
+                        <span class="ms-2">Medium Moisture (Adequate water)</span>
+                    </div>
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-danger" style="width: 20px; height: 20px;"></div>
+                        <span class="ms-2">Low Moisture (Needs irrigation)</span>
+                    </div>
+                    <p class="mb-0 text-muted">
+                        The analysis will provide moisture distribution and irrigation recommendations based on the thermal image patterns.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Section -->
+    <div id="resultsSection" class="row" style="display: none;">
+        <div class="col-lg-8 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Analysis Results</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Original Image:</h6>
+                            <img id="originalImage" class="img-fluid mb-3 rounded" alt="Original image">
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Thermal Analysis:</h6>
+                            <img id="thermalImage" class="img-fluid mb-3 rounded" alt="Thermal analysis">
+                        </div>
+                    </div>
+                    
+                    <h6 class="mt-4">Moisture Distribution:</h6>
+                    <div id="moistureChart" style="height: 300px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0"><i class="fas fa-list-ul me-2"></i>Recommendations</h5>
+                </div>
+                <div class="card-body" id="recommendationsArea">
+                    <!-- Recommendations will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script>
+document.getElementById('uploadForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    
+    // Show loading state
+    document.querySelector('button[type="submit"]').disabled = true;
+    document.querySelector('button[type="submit"]').innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Analyzing...';
+
+    fetch('/analyze_thermal', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            displayResults(data);
+        } else {
+            alert('Error: ' + data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while processing the image');
+    })
+    .finally(() => {
+        // Reset button state
+        document.querySelector('button[type="submit"]').disabled = false;
+        document.querySelector('button[type="submit"]').innerHTML = '<i class="fas fa-analyze me-2"></i>Analyze Image';
+    });
+});
+
+function displayResults(data) {
+    // Show results section
+    document.getElementById('resultsSection').style.display = 'flex';
+
+    // Display images
+    document.getElementById('originalImage').src = data.original_image;
+    document.getElementById('thermalImage').src = data.thermal_image;
+
+    // Create moisture distribution chart
+    const moistureLevels = data.moisture_levels;
+    const chartData = [{
+        values: Object.values(moistureLevels),
+        labels: Object.keys(moistureLevels).map(key => key.replace('_', ' ').toUpperCase()),
+        type: 'pie',
+        marker: {
+            colors: ['#007bff', '#28a745', '#dc3545']
+        }
+    }];
+
+    const layout = {
+        height: 300,
+        margin: {t: 0, b: 0, l: 0, r: 0},
+        showlegend: true
+    };
+
+    Plotly.newPlot('moistureChart', chartData, layout);
+
+    // Display recommendations
+    const recommendationsHtml = data.recommendations.map(rec => `
+        <div class="alert alert-${getPriorityClass(rec.priority)} mb-3">
+            <h6 class="alert-heading">${rec.priority} Priority</h6>
+            <p class="mb-1"><strong>${rec.action}</strong></p>
+            <small class="text-muted">${rec.details}</small>
+        </div>
+    `).join('');
+
+    document.getElementById('recommendationsArea').innerHTML = recommendationsHtml;
+}
+
+function getPriorityClass(priority) {
+    switch(priority.toLowerCase()) {
+        case 'high': return 'danger';
+        case 'medium': return 'warning';
+        case 'low': return 'success';
+        default: return 'info';
+    }
+}
+</script>
+{% endblock body %}

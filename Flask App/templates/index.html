@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+{% block pagetitle %}AI Disease Detection{% endblock pagetitle %}
+
+{% block body %}
+<div class="hero-section py-5 animate__animated animate__fadeIn" style="background: linear-gradient(90deg, #e8f5e9 60%, #c8e6c9 100%); min-height: 75vh;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 text-center text-lg-start mb-4 mb-lg-0">
+                <h1 class="display-4 fw-bold mb-3 animate__animated animate__fadeInLeft" style="color: #05380b; letter-spacing: 1px;">AI Disease Detection</h1>
+                <p class="lead mb-4 animate__animated animate__fadeInLeft animate__delay-1s" style="color: #145a32; font-size: 1.35rem;">
+                    Upload a plant leaf image or use your camera. <br>
+                    <span style="color:#388e3c;font-weight:600;">Our AI will instantly diagnose diseases and recommend treatments.</span>
+                </p>
+                <ul class="list-unstyled mb-4 animate__animated animate__fadeInLeft animate__delay-2s">
+                    <li class="mb-2"><i class="ion-android-checkmark-circle text-success"></i> Instant plant disease & pest detection</li>
+                    <li class="mb-2"><i class="ion-android-checkmark-circle text-success"></i> Detailed disease information</li>
+                    <li class="mb-2"><i class="ion-android-checkmark-circle text-success"></i> Prevention and treatment steps</li>
+                    <li class="mb-2"><i class="ion-android-checkmark-circle text-success"></i> Recommended supplements</li>
+                </ul>
+                <div class="d-flex flex-column flex-md-row gap-3 justify-content-center justify-content-lg-start mb-3 animate__animated animate__fadeInUp animate__delay-3s">
+                    <a href="/irrigation" class="btn btn-outline-success btn-lg px-4 shadow">Irrigation Management</a>
+                    <a href="/market" class="btn btn-outline-success btn-lg px-4 shadow">Supplements</a>
+                    <a href="/weather" class="btn btn-outline-secondary btn-lg px-4 shadow">Weather</a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center animate__animated animate__zoomIn animate__delay-1s">
+                <div class="card shadow border-0 rounded-4 overflow-hidden">
+                    <div class="card-body p-4">
+                        <img src="https://www.mdpi.com/sustainability/sustainability-14-10938/article_deploy/html/images/sustainability-14-10938-g001.png" height="200" alt="" width="150" class="d-block mx-auto mb-4 rounded-pill">
+                        
+                        <form action="/submit" method="POST" enctype="multipart/form-data">
+                            <div class="custom-file overflow-hidden mb-4">
+                                <input type="file" id="actual-btn" hidden name="image" />
+                                <div class="d-flex justify-content-center gap-2 mb-3">
+                                    <label for="actual-btn" class="btn btn-success"><i class="fas fa-upload me-2"></i>Choose File</label>
+                                    <label id="camera-btn" class="btn btn-primary"><i class="fas fa-camera me-2"></i>Open Camera</label>
+                                </div>
+                                <div class="text-center">
+                                    <span id="file-chosen" class="text-muted">No file chosen</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Camera feed container (hidden initially) -->
+                            <div id="camera-container" style="display: none;" class="mb-3">
+                                <video id="camera-feed" width="100%" height="240" autoplay class="rounded mb-2"></video>
+                                <button type="button" id="capture-btn" class="btn btn-primary w-100"><i class="fas fa-camera me-2"></i>Capture Photo</button>
+                            </div>
+                            
+                            <!-- Preview Image (will show the captured photo) -->
+                            <img id="preview" src="#" alt="Camera Photo Preview" style="display: none; max-width: 100%;" class="mb-3 rounded" />
+                            
+                            <h6 class="text-center mb-4 text-muted">
+                                Simply upload your plant's leaf image and then see the magic of AI.
+                            </h6>
+                            
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-success btn-lg px-4"><i class="fas fa-search me-2"></i>Analyze Image</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container my-5 animate__animated animate__fadeInUp animate__delay-2s">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 shadow border-0 hover-lift">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-success bg-opacity-10 p-3 rounded-circle me-3">
+                            <i class="fas fa-question-circle text-success fa-2x"></i>
+                        </div>
+                        <h5 class="card-title mb-0 fw-bold">Why Detect Plant Diseases?</h5>
+                    </div>
+                    <p class="card-text">Plant diseases affect the growth of their respective species. Proper diagnosis is one of the most important aspects of plant health management. Without proper identification of the disease and the disease-causing agent, disease control measures can be a waste of time and money and can lead to further plant losses.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 shadow border-0 hover-lift">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-success bg-opacity-10 p-3 rounded-circle me-3">
+                            <i class="fas fa-shield-alt text-success fa-2x"></i>
+                        </div>
+                        <h5 class="card-title mb-0 fw-bold">Prevention Steps</h5>
+                    </div>
+                    <ol class="ps-3">
+                        <li>Follow good sanitation practices</li>
+                        <li>Fertilize to keep your plants healthy</li>
+                        <li>Inspect plants for diseases before bringing them home</li>
+                        <li>Allow the soil to warm before planting</li>
+                        <li>Rotate crops in your vegetable garden</li>
+                        <li>Provide good air circulation</li>
+                        <li>Remove diseased stems and foliage</li>
+                    </ol>
+                    <div class="text-end">
+                        <a target="_blank" href="https://www.thespruce.com/prevent-plant-diseases-in-your-garden-2539511" class="btn btn-sm btn-outline-success">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 shadow border-0 hover-lift">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="bg-success bg-opacity-10 p-3 rounded-circle me-3">
+                            <i class="fas fa-leaf text-success fa-2x"></i>
+                        </div>
+                        <h5 class="card-title mb-0 fw-bold">Our Technology</h5>
+                    </div>
+                    <p class="card-text">AgriVision uses advanced Convolutional Neural Networks (CNN) to analyze plant leaf images. Our AI model has been trained on thousands of images to accurately identify 39 different plant diseases across various crops.</p>
+                    <p class="card-text">The system provides instant results with detailed information about the detected disease, prevention methods, and recommended supplements for treatment.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="container my-5">
+    <div class="row text-center">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow border-0">
+                <div class="card-body">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2909/2909765.png" width="60" class="mb-3" alt="AI Diagnosis">
+                    <h5 class="card-title">AI Disease Detection</h5>
+                    <p class="card-text">Upload a plant leaf image or use your camera. Our AI instantly diagnoses diseases and pests, recommending the best pesticide.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow border-0">
+                <div class="card-body">
+                    <img src="https://cdn-icons-png.flaticon.com/512/616/616494.png" width="60" class="mb-3" alt="Irrigation">
+                    <h5 class="card-title">Irrigation Management</h5>
+                    <p class="card-text">Smart irrigation advice using thermal images. Optimize water usage and keep your crops healthy. <a href="/irrigation">Try now</a>.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow border-0">
+                <div class="card-body">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2917/2917995.png" width="60" class="mb-3" alt="Supplements">
+                    <h5 class="card-title">Supplements & Weather</h5>
+                    <p class="card-text">Get the best supplements for your crops and check the latest weather updates. <a href="/market">Supplements</a> | <a href="/weather">Weather</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const actualBtn = document.getElementById('actual-btn');
+    const captureBtn = document.getElementById('capture-btn');
+    const fileChosen = document.getElementById('file-chosen');
+
+    actualBtn.addEventListener('change', function () {
+        fileChosen.textContent = this.files[0].name
+    })
+
+    let capturedFile = null; // Variable to hold the captured file
+
+    document.getElementById('camera-btn').addEventListener('click', function () {
+        // Show the camera container
+        document.getElementById('camera-container').style.display = 'block';
+
+        // Start the camera feed
+        startCamera();
+    });
+
+    // Start the camera feed using the getUserMedia API
+    function startCamera() {
+        const cameraFeed = document.getElementById('camera-feed');
+
+        // Request access to the user's camera
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function (stream) {
+                // Set the camera feed source to the stream
+                cameraFeed.srcObject = stream;
+            })
+            .catch(function (error) {
+                console.log('Error accessing the camera: ', error);
+            });
+    }
+
+    // Capture photo from the camera feed
+    document.getElementById('capture-btn').addEventListener('click', function () {
+        const cameraFeed = document.getElementById('camera-feed');
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Set canvas dimensions to match the video feed dimensions
+        canvas.width = cameraFeed.videoWidth;
+        canvas.height = cameraFeed.videoHeight;
+
+        // Draw the current frame from the video feed onto the canvas
+        ctx.drawImage(cameraFeed, 0, 0, canvas.width, canvas.height);
+
+        // Convert the canvas image to a data URL
+        const dataUrl = canvas.toDataURL('image/jpeg');
+
+        // Create a new file from the data URL
+        const imageBlob = dataURItoBlob(dataUrl);
+        capturedFile = new File([imageBlob], "camera_image.jpg", { type: 'image/jpeg' });
+
+        // Now you have a file object that you can use locally
+        document.getElementById('file-chosen').textContent = capturedFile.name;
+
+        // Show the captured image preview
+        const preview = document.getElementById('preview');
+        preview.src = dataUrl;
+        preview.style.display = 'block'; // Show the preview
+    });
+
+    // Helper function to convert data URL to Blob
+    function dataURItoBlob(dataURI) {
+        const byteString = atob(dataURI.split(',')[1]);
+        const arrayBuffer = new ArrayBuffer(byteString.length);
+        const uintArray = new Uint8Array(arrayBuffer);
+        for (let i = 0; i < byteString.length; i++) {
+            uintArray[i] = byteString.charCodeAt(i);
+        }
+        return new Blob([uintArray], { type: 'image/jpeg' });
+    }
+
+    // Set up the "Choose File" input to trigger when the image is captured
+    document.getElementById('actual-btn').addEventListener('click', function () {
+        // Use the captured image file as the input file for form submission
+        if (capturedFile) {
+            const dataTransfer = new DataTransfer(); // Create a DataTransfer object
+            dataTransfer.items.add(capturedFile); // Add the captured file to the DataTransfer object
+        }
+    });
+    
+    // Add active class to current nav item
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentLocation = window.location.pathname;
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            if(link.getAttribute('href') === currentLocation) {
+                link.classList.add('active');
+            }
+        });
+    });
+</script>
+{% endblock body %}

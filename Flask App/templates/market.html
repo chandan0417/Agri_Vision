@@ -1,0 +1,244 @@
+{% extends 'base.html' %}
+{% block pagetitle %}Supplements & Fertilizers{% endblock pagetitle %}
+
+{% block body %}
+<style>
+    .product-card .card {
+        height: 100%;
+        transition: transform 0.2s ease-in-out;
+    }
+    .product-card .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .product-card .card-img-container {
+        position: relative;
+        width: 100%;
+        height: 280px;
+        background: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        padding: 1rem;
+    }
+    .product-card .card-img-top {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        width: auto;
+        height: auto;
+    }
+    .product-card .card-body {
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        height: calc(100% - 280px);
+    }
+    .product-card .card-title {
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+        line-height: 1.4;
+    }
+    .product-card .badge {
+        font-size: 0.8rem;
+        padding: 0.5rem 0.75rem;
+    }
+</style>
+
+<div class="hero-section py-4 animate__animated animate__fadeIn" style="background: linear-gradient(90deg, #e8f5e9 60%, #c8e6c9 100%);">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold mb-3" style="color: #05380b;">🛒 Supplements & Fertilizers</h1>
+                <p class="lead mb-4" style="color: #145a32; font-size: 1.2rem;">
+                    Find the best products to keep your plants healthy and treat diseases effectively.
+                </p>
+                <div class="d-flex justify-content-center gap-3 mb-3">
+                    <button class="btn btn-success px-4" onclick="filterProducts('all')">All Products</button>
+                    <button class="btn btn-outline-success px-4" onclick="filterProducts('healthy')">Fertilizers</button>
+                    <button class="btn btn-outline-danger px-4" onclick="filterProducts('diseased')">Disease Treatments</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <div class="row g-4" id="products-container">
+        {% for index in range(0,supplement_name | length) %}
+        {% if index != 4 %}
+        <div class="col-12 col-md-6 col-lg-4 product-card animate__animated animate__fadeIn" 
+             data-type="{% if index==3 or index==5 or index==7 or index==11 or index==15 or index==18 or index==20 or index==23 or index==24 or index==25 or index==28 or index==38 %}healthy{% else %}diseased{% endif %}">
+            <div class="card h-100 shadow border-0">
+                <div class="card-img-container">
+                    <img src="{{supplement_image[index]}}" class="card-img-top" alt="{{supplement_name[index]}}">
+                    {% if index==3 or index==5 or index==7 or index==11 or index==15 or index==18 or index==20 or index==23 or index==24 or index==25 or index==28 or index==38 %}
+                    <span class="badge bg-success position-absolute top-0 end-0 m-3">Fertilizer</span>
+                    {% else %}
+                    <span class="badge bg-danger position-absolute top-0 end-0 m-3">Treatment</span>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title fw-bold text-truncate">{{supplement_name[index]}}</h5>
+                    <p class="card-text text-muted mb-3">For <span class="fw-bold">{{disease[index]}}</span></p>
+                    <div class="d-flex justify-content-between align-items-center mt-auto">
+                        <span class="badge bg-light text-dark">High Quality</span>
+                        <a target="_blank" href="{{buy[index]}}" class="btn btn-success btn-sm">
+                            <i class="fas fa-shopping-cart me-1"></i>Buy Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Featured Products Section -->
+<div class="container-fluid py-5" style="background-color: #c8e6c9;">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <h2 class="display-5 fw-bold" style="color: #05380b;">Featured Products</h2>
+                <p class="lead" style="color: #145a32;">Our top recommendations for plant health</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow border-0 animate__animated animate__fadeInUp">
+                    <div class="card-body text-center p-4">
+                        <div class="bg-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="fas fa-seedling fa-3x text-success"></i>
+                        </div>
+                        <h4 class="card-title">Organic Fertilizers</h4>
+                        <p class="card-text">Enhance soil health and plant growth with our organic fertilizer collection.</p>
+                        <a href="#" class="btn btn-outline-success mt-3">View Collection</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow border-0 animate__animated animate__fadeInUp animate__delay-1s">
+                    <div class="card-body text-center p-4">
+                        <div class="bg-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="fas fa-bug fa-3x text-danger"></i>
+                        </div>
+                        <h4 class="card-title">Pest Control</h4>
+                        <p class="card-text">Effective and safe solutions to protect your plants from harmful pests.</p>
+                        <a href="#" class="btn btn-outline-success mt-3">View Collection</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow border-0 animate__animated animate__fadeInUp animate__delay-2s">
+                    <div class="card-body text-center p-4">
+                        <div class="bg-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="fas fa-tint fa-3x text-primary"></i>
+                        </div>
+                        <h4 class="card-title">Soil Enhancers</h4>
+                        <p class="card-text">Improve soil structure and nutrient content for healthier plant growth.</p>
+                        <a href="#" class="btn btn-outline-success mt-3">View Collection</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Testimonials Section
+<div class="container my-5">
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+            <h2 class="display-5 fw-bold" style="color: #05380b;">What Farmers Say</h2>
+            <p class="lead" style="color: #145a32;">Testimonials from our satisfied customers</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow border-0">
+                <div class="card-body p-4">
+                    <div class="d-flex mb-3">
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                    </div>
+                    <p class="card-text">"The organic fertilizer recommended by AgriVision has transformed my tomato plants. They're healthier than ever and producing abundant fruit."</p>
+                    <div class="d-flex align-items-center mt-3">
+                        <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                            <span class="fw-bold">RK</span>
+                        </div>
+                        <div>
+                            <h6 class="mb-0 fw-bold">Rajesh Kumar</h6>
+                            <small class="text-muted">Tomato Farmer, Gujarat</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow border-0">
+                <div class="card-body p-4">
+                    <div class="d-flex mb-3">
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                    </div>
+                    <p class="card-text">"I was struggling with leaf spot disease in my apple orchard. The treatment recommended by AgriVision worked wonders and saved my crop."</p>
+                    <div class="d-flex align-items-center mt-3">
+                        <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                            <span class="fw-bold">SP</span>
+                        </div>
+                        <div>
+                            <h6 class="mb-0 fw-bold">Sunita Patel</h6>
+                            <small class="text-muted">Apple Grower, Himachal Pradesh</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow border-0">
+                <div class="card-body p-4">
+                    <div class="d-flex mb-3">
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star text-warning"></i>
+                        <i class="fas fa-star-half-alt text-warning"></i>
+                    </div>
+                    <p class="card-text">"The soil enhancers I purchased through AgriVision have significantly improved my crop yield. My plants are more resistant to stress and diseases now."</p>
+                    <div class="d-flex align-items-center mt-3">
+                        <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                            <span class="fw-bold">AM</span>
+                        </div>
+                        <div>
+                            <h6 class="mb-0 fw-bold">Arjun Mehta</h6>
+                            <small class="text-muted">Vegetable Farmer, Maharashtra</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<script>
+    // Product filtering functionality
+    function filterProducts(type) {
+        const products = document.querySelectorAll('.product-card');
+        
+        products.forEach(product => {
+            if (type === 'all' || product.dataset.type === type) {
+                product.style.display = 'block';
+            } else {
+                product.style.display = 'none';
+            }
+        });
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,59 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Environment files
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# VS Code settings
+.vscode/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Python virtual environment (Anaconda)
+*.conda
+*.env
+*.venv
+*.egg-info/
+*.egg
+
+# Model and data files
+*.h5
+*.pt
+*.pth
+*.ckpt
+*.joblib
+*.pkl
+
+# Uploaded images and static files
+Flask Deployed App/static/uploads/
+Flask Deployed App/static/*.log
+
+# CSV and result files (if generated during runtime)
+*.csv
+
+# Logs
+*.log
+
+# Ignore large datasets or backup files
+*.bak
+*.zip
+*.tar.gz
+*.tar
+*.7z
+
+# Ignore test outputs
+test-output/

@@ -1,0 +1,259 @@
+{% extends 'base.html' %}
+{% block pagetitle %}Weather Forecast{% endblock pagetitle %}
+{% block body %}
+<div class="hero-section" style="background-image: url('https://images.unsplash.com/photo-1534088568595-a066f410bcda?ixlib=rb-1.2.1&auto=format&fit=crop&w=1351&q=80'); background-size: cover; background-position: center; position: relative; min-height: 50vh;">
+    <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(5, 56, 11, 0.7);"></div>
+    <div class="container position-relative py-5" style="z-index: 1;">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-4 fw-bold mb-3 text-white"><i class="fas fa-cloud-sun me-2"></i>Weather Forecast</h1>
+                <p class="lead mb-4 text-white" style="font-size: 1.2rem;">
+                    Get real-time weather updates for your farm location to plan your agricultural activities better.
+                </p>
+                <div class="d-flex justify-content-center gap-2 flex-wrap">
+                    <button class="btn btn-success btn-lg px-4" onclick="getWeather()">
+                        <i class="fas fa-location-arrow me-2"></i>Get My Weather
+                    </button>
+                    <div class="input-group" style="max-width: 400px;">
+                        <input type="text" id="locationSearch" class="form-control form-control-lg" placeholder="Enter city name">
+                        <button class="btn btn-primary btn-lg" onclick="searchLocation()">
+                            <i class="fas fa-search me-2"></i>Search
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5">
+    <!-- Current Weather -->
+    <div id="weatherResult" class="mb-5"></div>
+    
+    <!-- 5-Day Forecast -->
+    <div id="forecastResult" class="mb-5"></div>
+
+    <!-- Weather Tips -->
+    <div class="row">
+        <div class="col-lg-12 mb-4">
+            <div class="card shadow border-0">
+                <div class="card-header bg-success text-white py-3">
+                    <h4 class="mb-0"><i class="fas fa-leaf me-2"></i>Agricultural Weather Tips</h4>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <h5><i class="fas fa-sun text-warning me-2"></i>Sunny Conditions</h5>
+                            <ul>
+                                <li>Ensure adequate irrigation for plants</li>
+                                <li>Consider using shade cloth for sensitive crops</li>
+                                <li>Best time for harvesting</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <h5><i class="fas fa-cloud-rain text-primary me-2"></i>Rainy Conditions</h5>
+                            <ul>
+                                <li>Avoid spraying pesticides</li>
+                                <li>Check drainage systems</li>
+                                <li>Monitor for disease pressure</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <h5><i class="fas fa-wind text-secondary me-2"></i>Windy Conditions</h5>
+                            <ul>
+                                <li>Avoid spraying operations</li>
+                                <li>Check crop supports</li>
+                                <li>Monitor water stress</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h5><i class="fas fa-temperature-low text-info me-2"></i>Cold Conditions</h5>
+                            <ul>
+                                <li>Protect sensitive crops</li>
+                                <li>Delay irrigation if frost expected</li>
+                                <li>Monitor cold stress symptoms</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function getWeather() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            
+            fetch(`/weather_api?lat=${lat}&lon=${lon}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.success) {
+                        showError(data.error);
+                        return;
+                    }
+                    displayCurrentWeather(data.current);
+                    displayForecast(data.forecast);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showError('Failed to fetch weather data');
+                });
+        }, function(error) {
+            console.error('Geolocation error:', error);
+            showError('Please allow location access to get weather data');
+        });
+    } else {
+        showError('Geolocation is not supported by your browser');
+    }
+}
+
+function displayCurrentWeather(current) {
+    document.getElementById('weatherResult').innerHTML = `
+        <div class="card shadow-lg border-0">
+            <div class="card-body p-4">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <h2 class="mb-3">
+                            <i class="fas fa-map-marker-alt text-danger me-2"></i>
+                            ${current.location}
+                        </h2>
+                        <div class="d-flex align-items-center mb-4">
+                            <img src="http://openweathermap.org/img/wn/${current.icon}@2x.png" alt="Weather icon" style="width: 80px;">
+                            <div>
+                                <h3 class="mb-0">${current.temp}°C</h3>
+                                <p class="text-muted mb-0">${current.description}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <div class="border rounded p-3">
+                                    <p class="mb-1"><i class="fas fa-thermometer-half text-danger me-2"></i>Feels Like</p>
+                                    <h5 class="mb-0">${current.feels_like}°C</h5>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="border rounded p-3">
+                                    <p class="mb-1"><i class="fas fa-tint text-primary me-2"></i>Humidity</p>
+                                    <h5 class="mb-0">${current.humidity}%</h5>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="border rounded p-3">
+                                    <p class="mb-1"><i class="fas fa-wind text-info me-2"></i>Wind Speed</p>
+                                    <h5 class="mb-0">${current.wind_speed} m/s</h5>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="border rounded p-3">
+                                    <p class="mb-1"><i class="fas fa-compress-arrows-alt text-success me-2"></i>Pressure</p>
+                                    <h5 class="mb-0">${current.pressure} hPa</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+function displayForecast(forecast) {
+    let forecastHTML = `
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>5-Day Forecast</h4>
+            </div>
+            <div class="card-body p-0">
+                <div class="row g-0">
+    `;
+
+    forecast.forEach(day => {
+        forecastHTML += `
+            <div class="col text-center p-3 border-end">
+                <h6 class="mb-2">${day.date}</h6>
+                <img src="http://openweathermap.org/img/wn/${day.icon}.png" alt="Weather icon">
+                <h5 class="mb-2">${day.temp_max}°C / ${day.temp_min}°C</h5>
+                <p class="mb-2 small">${day.description}</p>
+                <p class="mb-0 small text-muted">
+                    <i class="fas fa-tint text-primary me-1"></i>${day.humidity}%
+                    <br>
+                    <i class="fas fa-wind text-info me-1"></i>${day.wind_speed} m/s
+                </p>
+            </div>
+        `;
+    });
+
+    forecastHTML += `
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.getElementById('forecastResult').innerHTML = forecastHTML;
+}
+
+function searchLocation() {
+    const location = document.getElementById('locationSearch').value.trim();
+    if (!location) {
+        showError('Please enter a location to search');
+        return;
+    }
+
+    // Show loading state
+    document.getElementById('weatherResult').innerHTML = `
+        <div class="text-center">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">Fetching weather data...</p>
+        </div>
+    `;
+    document.getElementById('forecastResult').innerHTML = '';
+
+    // Add a new parameter to indicate this is a location search
+    fetch(`/weather_api?location=${encodeURIComponent(location)}`)
+        .then(response => response.json())
+        .then(data => {
+            if (!data.success) {
+                showError(data.error);
+                return;
+            }
+            displayCurrentWeather(data.current);
+            displayForecast(data.forecast);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showError('Failed to fetch weather data');
+        });
+}
+
+// Add event listener for Enter key in search input
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('locationSearch');
+    searchInput.addEventListener('keypress', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            searchLocation();
+        }
+    });
+});
+
+function showError(message) {
+    document.getElementById('weatherResult').innerHTML = `
+        <div class="alert alert-danger">
+            <h4 class="alert-heading">Error!</h4>
+            <p>${message}</p>
+            <hr>
+            <p class="mb-0">Please try again later or contact support.</p>
+        </div>
+    `;
+    document.getElementById('forecastResult').innerHTML = '';
+}
+</script>
+{% endblock body %}
