@@ -77,20 +77,20 @@ Try the live demo:
 ## ⭐ Web App Preview
 
 #### Main Page
-<img src="demo_images/1.png" alt="Main Page"><br>
+<img src="APP_IMAGES/1.png" alt="Main Page"><br>
 #### Feauture
-<img src="demo_images/2.png" alt="Features"><br>
+<img src="APP_IMAGES/2.png" alt="Features"><br>
 #### AI Engine
-<img src="demo_images/6.png" alt="AI Engine"><br>
+<img src="APP_IMAGES/6.png" alt="AI Engine"><br>
 #### Disease Detection
-<img src="demo_images/8.png" alt="Disease Detection"><br>
+<img src="APP_IMAGES/8.png" alt="Disease Detection"><br>
 #### Irrigation Analysis
-<img src="demo_images/13.png" alt="Irigation Analysis"><br>
+<img src="APP_IMAGES/13.png" alt="Irigation Analysis"><br>
 #### Irrigation Analysis
-<img src="demo_images/14.png" alt="Irigation Analysis"><br>
+<img src="APP_IMAGES/14.png" alt="Irigation Analysis"><br>
 #### Supplements/Fertilizer Store
-<img src="demo_images/10.JPG" alt="Supplements Store"><br>
+<img src="APP_IMAGES/10.JPG" alt="Supplements Store"><br>
 #### Weather Section
-<img src="demo_images/16.png" alt="Weather Section"><br>
+<img src="APP_IMAGES/15.png" alt="Weather Section"><br>
 #### Weather Section
-<img src="demo_images/15.png" alt="Weather Section"><br><br>
+<img src="APP_IMAGES/15.png" alt="Weather Section"><br><br>
