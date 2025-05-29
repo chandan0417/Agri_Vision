@@ -1,47 +1,96 @@
 # ⭐AgriVision - Comprehensive Agricultural Management System
-* AgriVision is a comprehensive agricultural management platform designed to assist farmers with multiple aspects of crop management. One of its main features is plant disease detection, which uses Deep Learning (specifically a Convolutional Neural Network) to classify leaf images into 39 different disease categories. The model is built using the PyTorch framework and trained on the Plant Village dataset. Additional features include thermal imaging for irrigation management, weather forecasting, and supplement recommendations.
 
-## ⭐Run AgriVision on your Machine
-* You must have **Python3.8** installed in your machine.
-* Create a Python Virtual Environment & Activate Virtual Environment [Link](https://docs.python.org/3/tutorial/venv.html)
-* Install all the dependencies using below command
-    `pip install -r requirements.txt`
-* Go to the `Flask App` folder.
-* Download the pre-trained model file `plant_disease_model_1_latest.pt` from [here](https://drive.google.com/drive/folders/1ewJWAiduGuld_9oGSrTuLumg9y62qS6A?usp=share_link)
-* Add the downloaded file in `Flask App` folder.
-* Run the Flask app using below command `python3 app.py`
-* You can also use downloaded file in `Model` Section and play with it using Jupyter Notebook.
+AgriVision is a comprehensive agricultural management platform designed to assist farmers with multiple aspects of crop management.  
+**Key Features:**
+- **Plant Disease Detection:** Uses Deep Learning (Convolutional Neural Network with PyTorch) to classify leaf images into 39 disease categories, trained on the Plant Village dataset.
+- **Thermal Imaging for Irrigation:** Helps manage irrigation using thermal data.
+- **Weather Forecasting:** Provides weather updates to optimize farming decisions.
+- **Supplement Recommendations:** Suggests fertilizers and supplements based on crop and disease.
 
-## ⭐Contribution ( Open Source )
-* This Project is now open source.
-* All the developers who are intrested they can contribute in this project.
-* Yo can make UI better , make Deep learning model more powerful , add informative markdown file in section...
-* If you will change Deep learning make sure you upload updated markdown file (.md) , .pdf and .ipynb in particular section.
-* Make sure your code is working. It will not have any type or error.
-* You have to fork this project then make a pull request after you testing will successful.
-* How to make pull request : https://opensource.com/article/19/7/create-pull-request-github
+---
 
+## ⭐ Getting Started
 
-## ⭐Testing Images
+### Prerequisites
+- **Python 3.8** must be installed on your machine.
 
-* If you do not have leaf images then you can use test images located in test_images folder
-* Each image has its corresponding disease name, so you can verify whether the model is working perfectly or not
+### Setup Instructions
 
-## ⭐Blog Link
-<a href="https://medium.com/analytics-vidhya/plant-disease-detection-using-convolutional-neural-networks-and-pytorch-87c00c54c88f" target = "_blank">Plant Disease Detection Using Convolutional Neural Networks with PyTorch</a><br>
+1. **Create and Activate a Python Virtual Environment**  
+   [Python venv guide](https://docs.python.org/3/tutorial/venv.html)
 
-## ⭐Deployed App
-<a href="https://plant-disease-detection-ai.herokuapp.com/" target = "_blank">Plant-Disease-Detection-AI</a><br>
+2. **Install Dependencies**  
+   ```
+   pip install -r requirements.txt
+   ```
 
+3. **Download Pre-trained Model**  
+   - Download `plant_disease_model_1_latest.pt` from [Google Drive](https://drive.google.com/drive/folders/1ewJWAiduGuld_9oGSrTuLumg9y62qS6A?usp=share_link)
+   - Place the file in the `Flask App` folder.
 
-## ⭐Snippet of Web App :
-#### Main page
-<img src = "demo_images/1.png" > <br>
-#### AI Engine 
-<img src = "demo_images/2.png"> <br>
-#### Results Page 
-<img src = "demo_images/3.png"> <br>
-#### Supplements/Fertilizer  Store
-<img src = "demo_images/4.JPG"> <br>
-#### Contact Us 
-<img src = "demo_images/5.png"> <br><br>
+4. **Run the Flask Application**  
+   ```
+   cd Flask App
+   python3 app.py
+   ```
+
+5. **(Optional) Use the Model in Jupyter Notebook**  
+   - You can also use the downloaded model file in the `Model` section and experiment with it in a Jupyter Notebook.
+
+---
+
+## ⭐ Contribution (Open Source)
+
+- This project is open source—contributions are welcome!
+- You can improve the UI, enhance the deep learning model, or add documentation.
+- If you update the deep learning model, upload the updated `.md`, `.pdf`, and `.ipynb` files in the appropriate section.
+- Ensure your code is error-free and tested before making a pull request.
+- **How to contribute:**  
+  1. Fork this repository.
+  2. Make your changes and test them.
+  3. Submit a pull request.  
+  [How to make a pull request](https://opensource.com/article/19/7/create-pull-request-github)
+
+---
+
+## ⭐ Testing Images
+
+- Sample leaf images are available in the `test_images` folder.
+- Each image is labeled with its disease name for easy verification.
+
+---
+
+## ⭐ Blog
+
+Read more about the project:  
+[Plant Disease Detection Using Convolutional Neural Networks with PyTorch](https://medium.com/analytics-vidhya/plant-disease-detection-using-convolutional-neural-networks-and-pytorch-87c00c54c88f)
+
+---
+
+## ⭐ Deployed App
+
+Try the live demo:  
+[Plant-Disease-Detection-AI (Heroku)](https://plant-disease-detection-ai.herokuapp.com/)
+
+---
+
+## ⭐ Web App Preview
+
+#### Main Page
+<img src="demo_images/1.png" alt="Main Page"><br>
+#### Feauture
+<img src="demo_images/2.png" alt="Features"><br>
+#### AI Engine
+<img src="demo_images/6.png" alt="AI Engine"><br>
+#### Disease Detection
+<img src="demo_images/8.png" alt="Disease Detection"><br>
+#### Irrigation Analysis
+<img src="demo_images/13.png" alt="Irigation Analysis"><br>
+#### Irrigation Analysis
+<img src="demo_images/14.png" alt="Irigation Analysis"><br>
+#### Supplements/Fertilizer Store
+<img src="demo_images/10.JPG" alt="Supplements Store"><br>
+#### Weather Section
+<img src="demo_images/16.png" alt="Weather Section"><br>
+#### Weather Section
+<img src="demo_images/15.png" alt="Weather Section"><br><br>
