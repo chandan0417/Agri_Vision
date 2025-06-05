@@ -1,6 +1,11 @@
 from flask import Blueprint, request, jsonify
 import requests
 from datetime import datetime
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 weather_api_bp = Blueprint('weather_api_bp', __name__)
 
@@ -10,8 +15,13 @@ def weather_api():
     lon = request.args.get('lon')
     location = request.args.get('location')
     
-    # API key
-    api_key = 'fafe541c895752f3ab410f8a51c6c040'
+    # Get API key from environment variable
+    api_key = os.getenv('OPENWEATHER_API_KEY')
+    if not api_key:
+        return jsonify({
+            'success': False,
+            'error': 'OpenWeather API key not configured. Please set OPENWEATHER_API_KEY environment variable.'
+        })
 
     # If location is provided, use geocoding API to get lat/lon
     if location:

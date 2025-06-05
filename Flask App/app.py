@@ -144,8 +144,13 @@ def weather_api():
     lat = request.args.get('lat')
     lon = request.args.get('lon')
 
-    # You'll need to replace this with your actual API key
-    api_key = request.args.get('api_key', 'fafe541c895752f3ab410f8a51c6c040')
+    # Get API key from environment variable
+    api_key = os.getenv('OPENWEATHER_API_KEY')
+    if not api_key:
+        return jsonify({
+            'success': False,
+            'error': 'OpenWeather API key not configured. Please set OPENWEATHER_API_KEY environment variable.'
+        })
 
     # Validate inputs
     if not lat or not lon:

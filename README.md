@@ -28,13 +28,18 @@ AgriVision is a comprehensive agricultural management platform designed to assis
    - Download `plant_disease_model_1_latest.pt` from [Google Drive](https://drive.google.com/drive/folders/1ewJWAiduGuld_9oGSrTuLumg9y62qS6A?usp=share_link)
    - Place the file in the `Flask App` folder.
 
-4. **Run the Flask Application**  
+4. **Set Up Environment Variables**
+   - Copy `.env.example` to a new file named `.env` in the `Flask App` directory
+   - Get an API key from [OpenWeather](https://openweathermap.org/api)
+   - Replace `your_api_key_here` in the `.env` file with your actual OpenWeather API key
+
+5. **Run the Flask Application**  
    ```
    cd Flask App
    python3 app.py
    ```
 
-5. **(Optional) Use the Model in Jupyter Notebook**  
+6. **(Optional) Use the Model in Jupyter Notebook**  
    - You can also use the downloaded model file in the `Model` section and experiment with it in a Jupyter Notebook.
 
 ---
@@ -89,7 +94,7 @@ Try the live demo:
 #### Irrigation Analysis
 <img src="APP_IMAGES/14.png" alt="Irigation Analysis"><br>
 #### Supplements/Fertilizer Store
-<img src="APP_IMAGES/10.JPG" alt="Supplements Store"><br>
+<img src="APP_IMAGES/10.png" alt="Supplements Store"><br>
 #### Weather Section
 <img src="APP_IMAGES/15.png" alt="Weather Section"><br>
 #### Weather Section
